@@ -7,7 +7,7 @@ import (
 
 func main() {
 	client := goflow_client.Create(goflow_client.Option{
-		Host:      "https://zhifa.cftzqinzhou.com",
+		Host:      "http://127.0.0.1:8888",
 		AppId:     "enforce",
 		AppSecret: "enforce",
 		Env:       "test",
