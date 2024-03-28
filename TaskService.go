@@ -18,9 +18,14 @@ type TaskService interface {
 	Execution(req ExecutionRequest) (instanceResult InstanceResult, err error)
 
 	/**
-	 * 撤回已执行的任务
+	 * 撤回权限
 	 */
-	RollbackExecution(instanceId, userId string) (err error)
+	RollbackLimit(instanceId, userId string) (allow bool, err error)
+
+	/**
+	 * 撤回
+	 */
+	Rollback(instanceId, userId string) (err error)
 
 	/**
 	 * 获取附件列表
@@ -97,12 +102,29 @@ func (t TaskServiceImpl) Execution(req ExecutionRequest) (instanceResult Instanc
 	return
 }
 
-func (t TaskServiceImpl) RollbackExecution(instanceId, userId string) (err error) {
+func (t TaskServiceImpl) RollbackLimit(instanceId, userId string) (allow bool, err error) {
 	param := map[string]any{
 		"instanceId": instanceId,
 		"userId":     userId,
 	}
-	result, err := httpPost[any](t.client, "client/task/rollbackExecute", param)
+	result, err := httpPost[bool](t.client, "client/task/rollbackLimit", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+		return
+	}
+	allow = result.Data
+	return
+}
+
+func (t TaskServiceImpl) Rollback(instanceId, userId string) (err error) {
+	param := map[string]any{
+		"instanceId": instanceId,
+		"userId":     userId,
+	}
+	result, err := httpPost[any](t.client, "client/task/rollback", param)
 	if err != nil {
 		return
 	}
