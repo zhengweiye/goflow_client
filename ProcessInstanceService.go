@@ -37,6 +37,12 @@ type ProcessInstanceService interface {
 	GetTypeList() (list []ProcessType, err error)
 
 	/**
+	 * 获取不同 "列表" 下的 "状态"下拉框
+	 * listType：all-全部列表，create-我发起列表，doing-待办列表，done-已办列表，cc-抄送列表
+	 */
+	GetStateList(listType string) (list []State, err error)
+
+	/**
 	 * 获取实例详情
 	 */
 	GetDetail(instanceId, userId string) (instanceDetail InstanceDetail, err error)
@@ -192,6 +198,23 @@ func (p ProcessInstanceServiceImpl) Cancel(instanceId, userId string) (err error
 func (p ProcessInstanceServiceImpl) GetTypeList() (list []ProcessType, err error) {
 	param := map[string]any{}
 	result, err := httpPost[[]ProcessType](p.client, "client/instance/getTypeList", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+		return
+	}
+	list = result.Data
+	return
+}
+
+func (p ProcessInstanceServiceImpl) GetStateList(listType string) (list []State, err error) {
+	param := map[string]any{
+		"listType": listType,
+	}
+
+	result, err := httpPost[[]State](p.client, "client/instance/getStateList", param)
 	if err != nil {
 		return
 	}
@@ -516,18 +539,17 @@ type ProcessType struct {
 }
 
 type InstanceDetail struct {
-	Id             string           `json:"id"`
-	SubProcess     bool             `json:"subProcess"`
-	BusinessId     string           `json:"businessId"`
-	BusinessTitle  string           `json:"businessTitle"`
-	LimitTime      string           `json:"limitTime"`
-	EndTime        string           `json:"endTime"`
-	CreateUserId   string           `json:"createUserId"`
-	CreateUserName string           `json:"createUserName"`
-	CreateTime     string           `json:"createTime"`
-	DoingTaskIds   []string         `json:"doingTaskIds"` // 待办任务Id集合
-	State          InstanceState    `json:"state"`
-	Buttons        []InstanceButton `json:"buttons"`
+	Id             string        `json:"id"`
+	SubProcess     bool          `json:"subProcess"`
+	BusinessId     string        `json:"businessId"`
+	BusinessTitle  string        `json:"businessTitle"`
+	LimitTime      string        `json:"limitTime"`
+	EndTime        string        `json:"endTime"`
+	CreateUserId   string        `json:"createUserId"`
+	CreateUserName string        `json:"createUserName"`
+	CreateTime     string        `json:"createTime"`
+	DoingTaskIds   []string      `json:"doingTaskIds"` // 待办任务Id集合
+	State          InstanceState `json:"state"`
 }
 
 type InstanceState struct {
@@ -554,6 +576,7 @@ type InstanceNode struct {
 	NodeName           string              `json:"nodeName"`
 	NodeState          InstanceState       `json:"nodeState"`
 	FinishTime         string              `json:"finishTime"`
+	ConsumeTime        string              `json:"consumeTime"` // 耗时时长
 	Actors             []InstanceNodeActor `json:"actors"`
 	ChildrenInstanceId string              `json:"childrenInstanceId"`
 }
@@ -584,7 +607,7 @@ type InstanceAllQuery struct {
 	PageSize int      `json:"pageSize"` // 每页记录数（必填）
 	Type     string   `json:"type"`     // 流程类型（选填）
 	Title    string   `json:"title"`    // 标题（选填）
-	State    string   `json:"state"`    // 状态（noFinish-未完成,finish-已完成）（选填）
+	State    string   `json:"state"`    // 状态（选填）
 	UserIds  []string `json:"userIds"`  // 查看的用户id数组（必填）
 	OverDate bool     `json:"overDate"` // 查看逾期
 	NearDate bool     `json:"nearDate"` // 查看临期
@@ -615,7 +638,7 @@ type InstanceCreateQuery struct {
 	PageSize  int    `json:"pageSize"`  // 每页记录数（必填）
 	Type      string `json:"type"`      // 流程类型（选填）
 	Title     string `json:"title"`     // 标题（选填）
-	State     string `json:"state"`     // 状态（noFinish-未完成,finish-已完成）（选填）
+	State     string `json:"state"`     // 状态（选填）
 	CurUserId string `json:"curUserId"` // 用户id（必填）
 	OverDate  bool   `json:"overDate"`  // 查看逾期
 	NearDate  bool   `json:"nearDate"`  // 查看临期
@@ -642,11 +665,13 @@ type InstanceCreateList struct {
 }
 
 type InstanceTodoQuery struct {
-	CurPage   int    `json:"curPage"`   // 当前页码（必填）
-	PageSize  int    `json:"pageSize"`  // 每页记录数（必填）
-	Type      string `json:"type"`      // 流程类型（选填）
-	Title     string `json:"title"`     // 标题（选填）
-	CurUserId string `json:"curUserId"` // 用户id（必填）
+	CurPage         int      `json:"curPage"`         // 当前页码（必填）
+	PageSize        int      `json:"pageSize"`        // 每页记录数（必填）
+	Type            string   `json:"type"`            // 流程类型（选填）
+	Title           string   `json:"title"`           // 标题（选填）
+	CurUserId       string   `json:"curUserId"`       // 用户id（必填）
+	IncludeNodeKeys []string `json:"includeNodeKeys"` // 包含哪些节点,为空则包含所有节点（选填）
+	ExcludeNodeKeys []string `json:"excludeNodeKeys"` // 排除哪些节点,为空则不排除任何节点（选填）
 }
 
 type InstanceTodoList struct {
@@ -665,11 +690,13 @@ type InstanceTodoList struct {
 }
 
 type InstanceDoneQuery struct {
-	CurPage   int    `json:"curPage"`   // 当前页码（必填）
-	PageSize  int    `json:"pageSize"`  // 每页记录数（必填）
-	Type      string `json:"type"`      // 流程类型（选填）
-	Title     string `json:"title"`     // 标题（选填）
-	CurUserId string `json:"curUserId"` // 用户id（必填）
+	CurPage         int      `json:"curPage"`         // 当前页码（必填）
+	PageSize        int      `json:"pageSize"`        // 每页记录数（必填）
+	Type            string   `json:"type"`            // 流程类型（选填）
+	Title           string   `json:"title"`           // 标题（选填）
+	CurUserId       string   `json:"curUserId"`       // 用户id（必填）
+	IncludeNodeKeys []string `json:"includeNodeKeys"` // 包含哪些节点,为空则包含所有节点（选填）
+	ExcludeNodeKeys []string `json:"excludeNodeKeys"` // 排除哪些节点,为空则不排除任何节点（选填）
 }
 
 type InstanceDoneList struct {
