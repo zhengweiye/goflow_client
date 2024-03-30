@@ -18,6 +18,11 @@ type TaskService interface {
 	Execution(req ExecutionRequest) (instanceResult InstanceResult, err error)
 
 	/**
+	 * 抄送已读
+	 */
+	ReadCc(taskId, userId string) (err error)
+
+	/**
 	 * 回退权限
 	 */
 	RollbackLimit(instanceId, userId string) (allow bool, err error)
@@ -104,6 +109,22 @@ func (t TaskServiceImpl) Execution(req ExecutionRequest) (instanceResult Instanc
 		return
 	}
 	instanceResult = result.Data
+	return
+}
+
+func (t TaskServiceImpl) ReadCc(taskId, userId string) (err error) {
+	param := map[string]any{
+		"taskId": taskId,
+		"userId": userId,
+	}
+	result, err := httpPost[any](t.client, "client/task/read", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+		return
+	}
 	return
 }
 
