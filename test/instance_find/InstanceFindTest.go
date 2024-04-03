@@ -49,7 +49,7 @@ func main8() {
 	totalElements, totalPage, list, err := client.GetProcessInstanceService().GetTodoList(goflow_client.InstanceTodoQuery{
 		CurPage:   1,
 		PageSize:  10,
-		CurUserId: "1",
+		CurUserId: "2",
 	})
 	fmt.Println("异常：", err)
 	fmt.Println("总记录数：", totalElements, ", 总页数：", totalPage)
@@ -69,7 +69,7 @@ func main7() {
 	totalElements, totalPage, list, err := client.GetProcessInstanceService().GetCreateList(goflow_client.InstanceCreateQuery{
 		CurPage:   1,
 		PageSize:  10,
-		CurUserId: "1",
+		CurUserId: "3",
 	})
 	fmt.Println("异常：", err)
 	fmt.Println("总记录数：", totalElements, ", 总页数：", totalPage)
@@ -93,28 +93,6 @@ func main6() {
 	fmt.Printf("记录：%+v\n", list)
 }
 
-func main5() {
-	client := goflow_client.Create(goflow_client.Option{
-		Host:      "http://127.0.0.1:8888",
-		AppId:     "enforce",
-		AppSecret: "enforce",
-		Env:       "test",
-	})
-	err := client.GetProcessInstanceService().TxCommit("5af4efdf-eac8-456c-967c-f0f49fdd6b85", "1")
-	fmt.Println("异常：", err)
-}
-
-func main4() {
-	client := goflow_client.Create(goflow_client.Option{
-		Host:      "http://127.0.0.1:8888",
-		AppId:     "enforce",
-		AppSecret: "enforce",
-		Env:       "test",
-	})
-	err := client.GetProcessInstanceService().TxRollback("bec870fa-6317-4161-a925-00e9a7bea16b", "1")
-	fmt.Println("异常：", err)
-}
-
 func main3() {
 	client := goflow_client.Create(goflow_client.Option{
 		Host:      "http://127.0.0.1:8888",
@@ -134,9 +112,11 @@ func main() {
 		AppSecret: "enforce",
 		Env:       "test",
 	})
-	nodes, err := client.GetProcessInstanceService().GetNodes("5af4efdf-eac8-456c-967c-f0f49fdd6b85")
+	nodes, err := client.GetProcessInstanceService().GetNodes("a43f7908-5962-4f5a-90aa-40c1be17183d")
 	fmt.Println("异常：", err)
-	fmt.Printf("结果：%+v\n", nodes)
+	for _, n := range nodes {
+		fmt.Println(n.NodeName, "==", n.NodeState)
+	}
 }
 
 func main1() {
@@ -146,7 +126,9 @@ func main1() {
 		AppSecret: "enforce",
 		Env:       "test",
 	})
-	nodes, err := client.GetProcessDefineService().GetNodes("leave", "1", nil)
+	nodes, err := client.GetProcessDefineService().GetNodes("leave2", "1", map[string]any{
+		"days": 1,
+	})
 	fmt.Println("异常：", err)
 	fmt.Printf("结果：%+v\n", nodes)
 }

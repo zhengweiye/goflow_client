@@ -47,13 +47,13 @@ func httpPost[T any](client *Client, methodPath string, param any) (data Result[
 	}
 	paramBytes, err := json.Marshal(param)
 	if err != nil {
-		panic(err)
+		return
 	}
 	body = bytes.NewReader(paramBytes)
 
 	request, err := http.NewRequest("POST", fmt.Sprintf("%s/%s/%s", client.host, "goflow", methodPath), body)
 	if err != nil {
-		panic(err)
+		return
 	}
 	request.Header.Set("Content-Type", "application/json")
 	request.Header.Set("appId", client.appId)
@@ -61,13 +61,14 @@ func httpPost[T any](client *Client, methodPath string, param any) (data Result[
 	request.Header.Set("env", client.env)
 	resp, err := httpClient.Do(request)
 	if err != nil {
-		panic(err)
+		return
 	}
 	defer resp.Body.Close()
 
 	//TODO 状态码判断
 	if resp.StatusCode != 200 {
-		panic(resp.Status)
+		err = fmt.Errorf("http请求返回的状态为%d", resp.StatusCode)
+		return
 	}
 
 	//TODO 读取io
@@ -76,7 +77,8 @@ func httpPost[T any](client *Client, methodPath string, param any) (data Result[
 		panic(err)
 	}
 	if len(resBytes) == 0 {
-		panic("返回字节数组为空")
+		err = fmt.Errorf("返回字节数组为空")
+		return
 	}
 
 	//TODO 反序列化
