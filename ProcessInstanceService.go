@@ -617,9 +617,10 @@ type InstanceDetail struct {
 }
 
 type DoingTask struct {
-	Id      string   `json:"id"`
-	Name    string   `json:"name"`
-	UserIds []string `json:"userIds"`
+	TaskId   string   `json:"taskId"`
+	NodeId   string   `json:"nodeId"`
+	NodeName string   `json:"nodeName"`
+	UserIds  []string `json:"userIds"`
 }
 
 type InstanceList struct {
