@@ -45,7 +45,7 @@ type ProcessInstanceService interface {
 	/**
 	 * 获取实例详情
 	 */
-	GetDetail(instanceId, userId string) (instanceDetail InstanceDetail, err error)
+	GetDetail(instanceId string) (instanceDetail InstanceDetail, err error)
 
 	/**
 	 * 获取实例流水
@@ -231,10 +231,9 @@ func (p ProcessInstanceServiceImpl) GetStateList(listType string) (list []State,
 	return
 }
 
-func (p ProcessInstanceServiceImpl) GetDetail(instanceId, userId string) (instanceDetail InstanceDetail, err error) {
+func (p ProcessInstanceServiceImpl) GetDetail(instanceId string) (instanceDetail InstanceDetail, err error) {
 	param := map[string]any{
 		"instanceId": instanceId,
-		"userId":     userId,
 	}
 	result, err := httpPost[InstanceDetail](p.client, "client/instance/getInstance", param)
 	if err != nil {
