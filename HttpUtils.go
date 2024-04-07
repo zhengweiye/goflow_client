@@ -74,7 +74,7 @@ func httpPost[T any](client *Client, methodPath string, param any) (data Result[
 	//TODO 读取io
 	resBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
-		panic(err)
+		return
 	}
 	if len(resBytes) == 0 {
 		err = fmt.Errorf("返回字节数组为空")

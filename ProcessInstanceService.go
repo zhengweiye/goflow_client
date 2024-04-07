@@ -612,9 +612,15 @@ type InstanceDetail struct {
 	CreateUserId   string        `json:"createUserId"`
 	CreateUserName string        `json:"createUserName"`
 	CreateTime     string        `json:"createTime"`
-	DoingTaskIds   []string      `json:"doingTaskIds"` // 待办任务Id集合
-	CurNodeName    string        `json:"curNodeName"`
-	State          InstanceState `json:"state"`
+	DoingTasks     []DoingTask   `json:"doingTasks"`
+	State          string        `json:"state"`
+	StateShow      InstanceState `json:"stateShow"`
+}
+
+type DoingTask struct {
+	Id      string   `json:"id"`
+	Name    string   `json:"name"`
+	UserIds []string `json:"userIds"`
 }
 
 type InstanceList struct {
