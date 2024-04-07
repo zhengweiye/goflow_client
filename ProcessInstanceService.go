@@ -620,6 +620,7 @@ type DoingTask struct {
 	TaskId   string   `json:"taskId"`
 	NodeId   string   `json:"nodeId"`
 	NodeName string   `json:"nodeName"`
+	FormUrl  string   `json:"formUrl"`
 	UserIds  []string `json:"userIds"`
 }
 
