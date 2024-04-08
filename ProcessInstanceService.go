@@ -533,6 +533,7 @@ type StartRequest struct {
 	Fields        []Field        `json:"fields"`        // 列表字段（选填）
 	Users         []NodeUsers    `json:"users"`         // 启动时,各个节点对应的负责人（选填）
 	Variable      map[string]any `json:"variable"`      // 变量（选填）
+	Remark        string         `json:"remark"`        // 备注（选填）
 }
 
 type StartChildRequest struct {
