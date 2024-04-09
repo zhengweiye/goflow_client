@@ -273,10 +273,10 @@ type File struct {
 }
 
 type InstanceResult struct {
-	InstanceId    string `json:"instanceId"`    // 实例Id
-	InstanceState string `json:"instanceState"` // 实例状态（cancel-取消,draft-草稿,doing-正在处理,done-已结束）
-	BusinessId    string `json:"businessId"`    // 业务Id
-	BusinessType  string `json:"businessType"`  // 业务类型
+	InstanceId    string        `json:"instanceId"`    // 实例Id
+	InstanceState InstanceState `json:"instanceState"` // 实例状态（cancel-取消,draft-草稿,doing-正在处理,done-已结束）
+	BusinessId    string        `json:"businessId"`    // 业务Id
+	BusinessType  string        `json:"businessType"`  // 业务类型
 }
 
 type TaskFile struct {

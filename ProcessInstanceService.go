@@ -39,8 +39,10 @@ type ProcessInstanceService interface {
 	/**
 	 * 获取不同 "列表" 下的 "状态"下拉框
 	 * listType：all-全部列表，create-我发起列表，doing-待办列表，done-已办列表，cc-抄送列表
+	 * processKey： 流程标识
+	 * includeCancel：是否包含撤销、草稿状态
 	 */
-	GetStateList(listType string) (list []State, err error)
+	GetStateList(listType, processKey string, includeCancel bool) (list []State, err error)
 
 	/**
 	 * 获取实例详情
@@ -214,9 +216,11 @@ func (p ProcessInstanceServiceImpl) GetTypeList() (list []ProcessType, err error
 	return
 }
 
-func (p ProcessInstanceServiceImpl) GetStateList(listType string) (list []State, err error) {
+func (p ProcessInstanceServiceImpl) GetStateList(listType, processKey string, includeCancel bool) (list []State, err error) {
 	param := map[string]any{
-		"listType": listType,
+		"listType":      listType,
+		"processKey":    processKey,
+		"includeCancel": includeCancel,
 	}
 
 	result, err := httpPost[[]State](p.client, "client/instance/getStateList", param)
@@ -613,7 +617,7 @@ type InstanceDetail struct {
 	CreateUserName string        `json:"createUserName"`
 	CreateTime     string        `json:"createTime"`
 	DoingTasks     []DoingTask   `json:"doingTasks"`
-	State          string        `json:"state"`
+	State          InstanceState `json:"state"`
 	StateShow      InstanceState `json:"stateShow"`
 }
 
@@ -662,14 +666,15 @@ type InstanceDealList struct {
 }
 
 type InstanceAllQuery struct {
-	CurPage  int      `json:"curPage"`  // 当前页码（必填）
-	PageSize int      `json:"pageSize"` // 每页记录数（必填）
-	Type     string   `json:"type"`     // 流程类型（选填）
-	Title    string   `json:"title"`    // 标题（选填）
-	State    string   `json:"state"`    // 状态（选填）
-	UserIds  []string `json:"userIds"`  // 查看的用户id数组（必填）
-	OverDate bool     `json:"overDate"` // 查看逾期
-	NearDate bool     `json:"nearDate"` // 查看临期
+	CurPage       int      `json:"curPage"`       // 当前页码（必填）
+	PageSize      int      `json:"pageSize"`      // 每页记录数（必填）
+	Type          string   `json:"type"`          // 流程类型（选填）
+	Title         string   `json:"title"`         // 标题（选填）
+	State         string   `json:"state"`         // 状态（选填）
+	UserIds       []string `json:"userIds"`       // 查看的用户id数组（必填）
+	OverDate      bool     `json:"overDate"`      // 查看逾期
+	NearDate      bool     `json:"nearDate"`      // 查看临期
+	IncludeCancel bool     `json:"includeCancel"` // 是否包含已撤销、草稿的记录
 }
 
 type InstanceCreateQuery struct {
