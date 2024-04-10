@@ -265,6 +265,8 @@ type ExecutionRequest struct {
 	Variable          map[string]any `json:"variable"`          // 变量（选填）
 	NextHandleUserIds []string       `json:"nextHandleUserIds"` // 下一个节点审批人（选填）
 	Files             []File         `json:"files"`             // 附件（选填）
+	SignFile          File           `json:"signFile"`          // 签名文件（选填）signFile和signFileId二选一
+	SignFileId        string         `json:"signFileId"`        // 签名文件Id（选填）signFile和signFileId二选一
 }
 
 type File struct {
