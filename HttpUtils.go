@@ -24,7 +24,7 @@ var httpClient = &http.Client{
 		MaxIdleConns:          100,              // 最大空闲连接
 		IdleConnTimeout:       90 * time.Second, // 空闲超时时间
 		TLSHandshakeTimeout:   10 * time.Second, // tls握手超时时间
-		ExpectContinueTimeout: 1 * time.Second,  // 100-continue状态码超时时间
+		ExpectContinueTimeout: 90 * time.Second, // 100-continue状态码超时时间
 	},
 }
 
