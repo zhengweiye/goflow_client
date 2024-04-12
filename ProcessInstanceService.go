@@ -575,14 +575,13 @@ type InstanceFlow struct {
 }
 
 type InstanceNode struct {
-	TaskId             string              `json:"taskId"`
-	NodeKey            string              `json:"nodeKey"`
-	NodeName           string              `json:"nodeName"`
-	NodeState          InstanceState       `json:"nodeState"`
-	FinishTime         string              `json:"finishTime"`
-	ConsumeTime        string              `json:"consumeTime"` // 耗时时长
-	Actors             []InstanceNodeActor `json:"actors"`
-	ChildrenInstanceId string              `json:"childrenInstanceId"`
+	TaskId      string              `json:"taskId"`
+	NodeKey     string              `json:"nodeKey"`
+	NodeName    string              `json:"nodeName"`
+	NodeState   InstanceState       `json:"nodeState"`
+	FinishTime  string              `json:"finishTime"`
+	ConsumeTime string              `json:"consumeTime"` // 耗时时长
+	Actors      []InstanceNodeActor `json:"actors"`
 }
 
 type InstanceNodeActor struct {
