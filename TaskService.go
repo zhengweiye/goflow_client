@@ -20,7 +20,7 @@ type TaskService interface {
 	/**
 	 * 获取处理意见
 	 */
-	GetHandleByUserId(instanceId, userId, nodeKey string) (taskHandle TaskHandle, err error)
+	GetHandleByUserId(instanceId, userId, nodeKey string) (taskHandle *TaskHandle, err error)
 	GetHandleByTaskId(taskId string) (taskHandles []TaskHandle, err error)
 
 	/**
@@ -117,13 +117,13 @@ func (t TaskServiceImpl) Execution(req ExecutionRequest) (err error) {
 	return
 }
 
-func (t TaskServiceImpl) GetHandleByUserId(instanceId, userId, nodeKey string) (taskHandle TaskHandle, err error) {
+func (t TaskServiceImpl) GetHandleByUserId(instanceId, userId, nodeKey string) (taskHandle *TaskHandle, err error) {
 	param := map[string]any{
 		"instanceId": instanceId,
 		"userId":     userId,
 		"nodeKey":    nodeKey,
 	}
-	result, err := httpPost[TaskHandle](t.client, "client/task/getHandleByUserId", param)
+	result, err := httpPost[*TaskHandle](t.client, "client/task/getHandleByUserId", param)
 	if err != nil {
 		return
 	}
