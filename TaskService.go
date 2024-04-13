@@ -330,8 +330,9 @@ type TaskResult struct {
 }
 
 type TaskHandle struct {
-	HandleResultCode string
-	HandleResultName string
-	SignFileId       string
-	SignFilePath     string
+	HandleResultCode string `json:"handleResultCode"`
+	HandleResultName string `json:"handleResultName"`
+	HandleOpinion    string `json:"handleOpinion"`
+	SignFileId       string `json:"signFileId"`
+	SignFilePath     string `json:"signFilePath"`
 }
