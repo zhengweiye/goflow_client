@@ -330,6 +330,8 @@ type TaskResult struct {
 }
 
 type TaskHandle struct {
+	UserId           string `json:"userId"`
+	UserName         string `json:"userName"`
 	HandleResultCode string `json:"handleResultCode"`
 	HandleResultName string `json:"handleResultName"`
 	HandleOpinion    string `json:"handleOpinion"`
