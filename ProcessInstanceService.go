@@ -613,18 +613,21 @@ type InstanceListField struct {
 }
 
 type InstanceDetail struct {
-	Id             string        `json:"id"`
-	SubProcess     bool          `json:"subProcess"`
-	BusinessId     string        `json:"businessId"`
-	BusinessTitle  string        `json:"businessTitle"`
-	LimitTime      string        `json:"limitTime"`
-	EndTime        string        `json:"endTime"`
-	CreateUserId   string        `json:"createUserId"`
-	CreateUserName string        `json:"createUserName"`
-	CreateTime     string        `json:"createTime"`
-	DoingTasks     []DoingTask   `json:"doingTasks"`
-	State          InstanceState `json:"state"`
-	StateShow      InstanceState `json:"stateShow"`
+	Id             string              `json:"id"`
+	SubProcess     bool                `json:"subProcess"`
+	BusinessId     string              `json:"businessId"`
+	BusinessTitle  string              `json:"businessTitle"`
+	TypeCode       string              `json:"typeCode"`
+	TypeName       string              `json:"typeName"`
+	Fields         []InstanceListField `json:"fields"`
+	LimitTime      string              `json:"limitTime"`
+	EndTime        string              `json:"endTime"`
+	CreateUserId   string              `json:"createUserId"`
+	CreateUserName string              `json:"createUserName"`
+	CreateTime     string              `json:"createTime"`
+	DoingTasks     []DoingTask         `json:"doingTasks"`
+	State          InstanceState       `json:"state"`
+	StateShow      InstanceState       `json:"stateShow"`
 }
 
 type DoingTask struct {
