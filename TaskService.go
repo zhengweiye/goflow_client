@@ -15,7 +15,7 @@ type TaskService interface {
 	/**
 	 * 执行任务
 	 */
-	Execution(req ExecutionRequest) (instanceResult InstanceResult, err error)
+	Execution(req ExecutionRequest) (err error)
 
 	/**
 	 * 抄送已读
@@ -94,13 +94,13 @@ func (t TaskServiceImpl) GetTaskResults(taskId string) (results []TaskResult, er
 	return
 }
 
-func (t TaskServiceImpl) Execution(req ExecutionRequest) (instanceResult InstanceResult, err error) {
+func (t TaskServiceImpl) Execution(req ExecutionRequest) (err error) {
 	var param map[string]any
 	err = mapstructure.Decode(req, &param)
 	if err != nil {
 		return
 	}
-	result, err := httpPost[InstanceResult](t.client, "client/task/execute", param)
+	result, err := httpPost[any](t.client, "client/task/execute", param)
 	if err != nil {
 		return
 	}
@@ -108,7 +108,6 @@ func (t TaskServiceImpl) Execution(req ExecutionRequest) (instanceResult Instanc
 		err = fmt.Errorf(result.Msg)
 		return
 	}
-	instanceResult = result.Data
 	return
 }
 
@@ -273,13 +272,6 @@ type ExecutionRequest struct {
 type File struct {
 	Name string `json:"name"` // 文件名称
 	Data []byte `json:"data"` // 文件字节数组
-}
-
-type InstanceResult struct {
-	InstanceId    string        `json:"instanceId"`    // 实例Id
-	InstanceState InstanceState `json:"instanceState"` // 实例状态（cancel-取消,draft-草稿,doing-正在处理,done-已结束）
-	BusinessId    string        `json:"businessId"`    // 业务Id
-	BusinessType  string        `json:"businessType"`  // 业务类型
 }
 
 type TaskFile struct {

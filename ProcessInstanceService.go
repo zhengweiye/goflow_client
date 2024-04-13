@@ -562,6 +562,13 @@ type ProcessType struct {
 	Name string `json:"name"`
 }
 
+type InstanceResult struct {
+	Id           string        `json:"id"`           // 实例Id
+	State        InstanceState `json:"state"`        // 实例状态（cancel-取消,draft-草稿,doing-正在处理,实例结果-在工作流后台动态配置）
+	BusinessId   string        `json:"businessId"`   // 业务Id
+	BusinessType string        `json:"businessType"` // 业务类型
+}
+
 type InstanceState struct {
 	Code  string `json:"code"`
 	Name  string `json:"name"`
