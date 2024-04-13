@@ -18,6 +18,12 @@ type TaskService interface {
 	Execution(req ExecutionRequest) (err error)
 
 	/**
+	 * 获取处理意见
+	 */
+	GetHandleByUserId(instanceId, userId, nodeKey string) (taskHandle TaskHandle, err error)
+	GetHandleByTaskId(taskId string) (taskHandles []TaskHandle, err error)
+
+	/**
 	 * 抄送已读
 	 */
 	ReadCc(taskId, userId string) (err error)
@@ -108,6 +114,40 @@ func (t TaskServiceImpl) Execution(req ExecutionRequest) (err error) {
 		err = fmt.Errorf(result.Msg)
 		return
 	}
+	return
+}
+
+func (t TaskServiceImpl) GetHandleByUserId(instanceId, userId, nodeKey string) (taskHandle TaskHandle, err error) {
+	param := map[string]any{
+		"instanceId": instanceId,
+		"userId":     userId,
+		"nodeKey":    nodeKey,
+	}
+	result, err := httpPost[TaskHandle](t.client, "client/task/getHandleByUserId", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+		return
+	}
+	taskHandle = result.Data
+	return
+}
+
+func (t TaskServiceImpl) GetHandleByTaskId(taskId string) (taskHandles []TaskHandle, err error) {
+	param := map[string]any{
+		"taskId": taskId,
+	}
+	result, err := httpPost[[]TaskHandle](t.client, "client/task/getHandleByTaskId", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+		return
+	}
+	taskHandles = result.Data
 	return
 }
 
@@ -287,4 +327,11 @@ type TaskResult struct {
 	Id         string `json:"id"`
 	Name       string `json:"name"`
 	FlowToNext bool   `json:"flowToNext"`
+}
+
+type TaskHandle struct {
+	HandleResultCode string
+	HandleResultName string
+	SignFileId       string
+	SignFilePath     string
 }
