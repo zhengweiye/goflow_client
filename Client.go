@@ -32,10 +32,6 @@ func Create(opt Option) *Client {
 	return clientObj
 }
 
-func (c *Client) GetSyncService() SyncService {
-	return getSyncService(c)
-}
-
 func (c *Client) GetProcessDefineService() ProcessDefineService {
 	return getProcessDefineService(c)
 }
