@@ -582,22 +582,33 @@ type InstanceFlow struct {
 }
 
 type InstanceNode struct {
-	TaskId      string              `json:"taskId"`
-	NodeKey     string              `json:"nodeKey"`
-	NodeName    string              `json:"nodeName"`
-	NodeState   InstanceState       `json:"nodeState"`
-	FinishTime  string              `json:"finishTime"`
-	ConsumeTime string              `json:"consumeTime"` // 耗时时长
-	Actors      []InstanceNodeActor `json:"actors"`
+	TaskId      string           `json:"taskId"`
+	NodeKey     string           `json:"nodeKey"`
+	NodeName    string           `json:"nodeName"`
+	NodeState   InstanceState    `json:"nodeState"`
+	FinishTime  string           `json:"finishTime"`
+	ConsumeTime string           `json:"consumeTime"` // 耗时时长
+	Users       []Actor          `json:"users"`
+	Handles     []InstanceHandle `json:"handles"`
 }
 
-type InstanceNodeActor struct {
-	UserId   string        `json:"userId"`
-	UserName string        `json:"userName"`
-	State    InstanceState `json:"state"`
-	Time     string        `json:"time"`
-	Opinion  string        `json:"opinion"`
-	Files    []TaskFile    `json:"files"`
+type Actor struct {
+	Id         string     `json:"id"`
+	Name       string     `json:"name"`
+	AvatarFile UserAvatar `json:"avatarFile"`
+}
+
+type UserAvatar struct {
+	FileId   string `json:"fileId"`
+	FilePath string `json:"filePath"`
+}
+
+type InstanceHandle struct {
+	User    Actor         `json:"user"`
+	State   InstanceState `json:"state"`
+	Time    string        `json:"time"`
+	Opinion string        `json:"opinion"`
+	Files   []TaskFile    `json:"files"`
 }
 
 type State struct {

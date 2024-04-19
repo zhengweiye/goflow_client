@@ -104,31 +104,3 @@ func main3() {
 	fmt.Println("异常：", err)
 	fmt.Printf("结果：%+v\n", list)
 }
-
-func main() {
-	client := goflow_client.Create(goflow_client.Option{
-		Host:      "http://127.0.0.1:8888",
-		AppId:     "enforce",
-		AppSecret: "enforce",
-		Env:       "test",
-	})
-	nodes, err := client.GetProcessInstanceService().GetNodes("a43f7908-5962-4f5a-90aa-40c1be17183d")
-	fmt.Println("异常：", err)
-	for _, n := range nodes {
-		fmt.Println(n.NodeName, "==", n.NodeState)
-	}
-}
-
-func main1() {
-	client := goflow_client.Create(goflow_client.Option{
-		Host:      "http://127.0.0.1:8888",
-		AppId:     "enforce",
-		AppSecret: "enforce",
-		Env:       "test",
-	})
-	nodes, err := client.GetProcessDefineService().GetNodes("leave2", "1", map[string]any{
-		"days": 1,
-	})
-	fmt.Println("异常：", err)
-	fmt.Printf("结果：%+v\n", nodes)
-}

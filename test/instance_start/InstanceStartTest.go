@@ -7,17 +7,18 @@ import (
 
 func main1() {
 	client := goflow_client.Create(goflow_client.Option{
-		Host:      "http://127.0.0.1:8888",
+		//Host:      "http://127.0.0.1:8888",
+		Host:      "https://zhifa.cftzqinzhou.com",
 		AppId:     "enforce",
 		AppSecret: "enforce",
 		Env:       "test",
 	})
 	instanceResult, err := client.GetProcessInstanceService().Start(goflow_client.StartRequest{
-		StartUserId:   "3",
-		ProcessKey:    "leave2",
+		StartUserId:   "16",
+		ProcessKey:    "case_main",
 		AutoSubmit:    true,
-		BusinessId:    "3",
-		BusinessTitle: "郑伟业请假申请3",
+		BusinessId:    "111",
+		BusinessTitle: "测试案件",
 		Fields: []goflow_client.Field{
 			{Key: "days", Name: "请假天数", Value: "1天", SortNum: 1},
 			{Key: "reason", Name: "请假理由", Value: "家里有事", SortNum: 2},
@@ -25,19 +26,26 @@ func main1() {
 		Variable: map[string]any{
 			"days": 2,
 		},
+		Users: []goflow_client.NodeUsers{
+			{
+				NodeId:  "Mjn0M-O5",
+				UserIds: []string{"16"},
+			},
+		},
 	})
 	fmt.Println("异常：", err)
 	fmt.Printf("结果：%+v\n", instanceResult)
 }
 
-func main() {
+func main2() {
 	client := goflow_client.Create(goflow_client.Option{
-		Host:      "http://127.0.0.1:8888",
+		//Host:      "http://127.0.0.1:8888",
+		Host:      "https://zhifa.cftzqinzhou.com",
 		AppId:     "enforce",
 		AppSecret: "enforce",
 		Env:       "test",
 	})
-	err := client.GetProcessInstanceService().TxCommit("476c88d8-8413-4855-95b6-05eee245d3bb", "3")
+	err := client.GetProcessInstanceService().TxCommit("8794c7c4-be04-4d3d-b7ec-c28e51a9947e", "16")
 	fmt.Println("异常：", err)
 }
 

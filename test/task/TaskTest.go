@@ -18,21 +18,19 @@ func main1() {
 
 func main() {
 	client := goflow_client.Create(goflow_client.Option{
-		Host:      "http://127.0.0.1:8888",
+		//Host:      "http://127.0.0.1:8888",
+		Host:      "https://zhifa.cftzqinzhou.com",
 		AppId:     "enforce",
 		AppSecret: "enforce",
 		Env:       "test",
 	})
-	instanceResult, err := client.GetTaskService().Execution(goflow_client.ExecutionRequest{
-		TaskId:        "b1ecb8a4-776d-4ecf-afda-50cc037a73c0",
-		UserId:        "2",
-		HandleResult:  "pass",
-		HandleOpinion: "同意了",
-		Variable: map[string]any{
-			"days": 2,
-		},
-		NextHandleUserIds: nil,
+	err := client.GetTaskService().Execution(goflow_client.ExecutionRequest{
+		TaskId:            "076c9e23-7307-43d5-b5b8-39cd47a81325",
+		UserId:            "23",
+		HandleResult:      "pass",
+		HandleOpinion:     "同意了",
+		Variable:          map[string]any{},
+		NextHandleUserIds: []string{},
 	})
 	fmt.Println("异常：", err)
-	fmt.Printf("结果：%+v\n", instanceResult)
 }
