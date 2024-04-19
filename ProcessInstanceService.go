@@ -588,11 +588,11 @@ type InstanceNode struct {
 	NodeState   InstanceState    `json:"nodeState"`
 	FinishTime  string           `json:"finishTime"`
 	ConsumeTime string           `json:"consumeTime"` // 耗时时长
-	Users       []Actor          `json:"users"`
+	Users       []User           `json:"users"`
 	Handles     []InstanceHandle `json:"handles"`
 }
 
-type Actor struct {
+type User struct {
 	Id         string     `json:"id"`
 	Name       string     `json:"name"`
 	AvatarFile UserAvatar `json:"avatarFile"`
@@ -604,7 +604,7 @@ type UserAvatar struct {
 }
 
 type InstanceHandle struct {
-	User    Actor         `json:"user"`
+	User    User          `json:"user"`
 	State   InstanceState `json:"state"`
 	Time    string        `json:"time"`
 	Opinion string        `json:"opinion"`
