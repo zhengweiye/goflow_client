@@ -15,7 +15,7 @@ type TaskService interface {
 	/**
 	 * 执行任务
 	 */
-	Execution(req ExecutionRequest) (err error)
+	Execution(req ExecutionRequest) (nextTasks []Task, err error)
 
 	/**
 	 * 获取处理意见
@@ -100,13 +100,13 @@ func (t TaskServiceImpl) GetTaskResults(taskId string) (results []TaskResult, er
 	return
 }
 
-func (t TaskServiceImpl) Execution(req ExecutionRequest) (err error) {
+func (t TaskServiceImpl) Execution(req ExecutionRequest) (nextTasks []Task, err error) {
 	var param map[string]any
 	err = mapstructure.Decode(req, &param)
 	if err != nil {
 		return
 	}
-	result, err := httpPost[any](t.client, "client/task/execute", param)
+	result, err := httpPost[[]Task](t.client, "client/task/execute", param)
 	if err != nil {
 		return
 	}
@@ -114,6 +114,7 @@ func (t TaskServiceImpl) Execution(req ExecutionRequest) (err error) {
 		err = fmt.Errorf(result.Msg)
 		return
 	}
+	nextTasks = result.Data
 	return
 }
 
@@ -337,4 +338,10 @@ type TaskHandle struct {
 	HandleOpinion    string `json:"handleOpinion"`
 	SignFileId       string `json:"signFileId"`
 	SignFilePath     string `json:"signFilePath"`
+}
+
+type Task struct {
+	Id      string   `json:"id"`
+	Name    string   `json:"name"`
+	UserIds []string `json:"userIds"`
 }
