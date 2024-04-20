@@ -24,7 +24,7 @@ func main() {
 		AppSecret: "enforce",
 		Env:       "test",
 	})
-	err := client.GetTaskService().Execution(goflow_client.ExecutionRequest{
+	_, err := client.GetTaskService().Execution(goflow_client.ExecutionRequest{
 		TaskId:            "076c9e23-7307-43d5-b5b8-39cd47a81325",
 		UserId:            "23",
 		HandleResult:      "pass",

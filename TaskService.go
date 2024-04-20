@@ -341,7 +341,7 @@ type TaskHandle struct {
 }
 
 type Task struct {
-	Id      string   `json:"id"`
-	Name    string   `json:"name"`
-	UserIds []string `json:"userIds"`
+	Id    string `json:"id"`
+	Name  string `json:"name"`
+	Users []User `json:"users"`
 }
