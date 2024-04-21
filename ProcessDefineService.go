@@ -12,6 +12,7 @@ type ProcessDefineService interface {
 	 * processVar 变量（如果流程有分支,根据变量来决定走哪条分支）
 	 */
 	GetNodes(processKey, userId string, processVar map[string]any) (nodes []Node, err error)
+	GetNextNodes(taskId string, processVar map[string]any) (nodes []Node, err error)
 }
 
 type ProcessDefineServiceImpl struct {
@@ -31,6 +32,23 @@ func (p ProcessDefineServiceImpl) GetNodes(processKey, userId string, processVar
 		"processVar": processVar,
 	}
 	result, err := httpPost[[]Node](p.client, "client/define/getNodes", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+		return
+	}
+	nodes = result.Data
+	return
+}
+
+func (p ProcessDefineServiceImpl) GetNextNodes(taskId string, processVar map[string]any) (nodes []Node, err error) {
+	param := map[string]any{
+		"taskId":     taskId,
+		"processVar": processVar,
+	}
+	result, err := httpPost[[]Node](p.client, "client/define/getNextNodes", param)
 	if err != nil {
 		return
 	}
