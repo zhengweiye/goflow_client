@@ -536,6 +536,7 @@ type StartRequest struct {
 	BusinessTitle string         `json:"businessTitle"` // 业务标题（必填）
 	Fields        []Field        `json:"fields"`        // 列表字段（选填）
 	Users         []NodeUsers    `json:"users"`         // 启动时,各个节点对应的负责人（选填）
+	NextUserIds   []string       `json:"nextUserIds"`   // 启动时,手工选择第一个节点的审批人
 	Variable      map[string]any `json:"variable"`      // 变量（选填）
 	Remark        string         `json:"remark"`        // 备注（选填）
 }

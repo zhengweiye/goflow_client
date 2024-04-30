@@ -6,12 +6,24 @@ import (
 
 type ProcessDefineService interface {
 	/**
-	 * 获取流程节点
+	 * 启动实例之前，查询流程节点
 	 * processKey 流程标识
 	 * userId 用户Id
 	 * processVar 变量（如果流程有分支,根据变量来决定走哪条分支）
 	 */
 	GetNodes(processKey, userId string, processVar map[string]any) (nodes []Node, err error)
+
+	/**
+	 * 启动实例之前，查询第一个审批节点
+	 * processKey 流程标识
+	 * userId 用户Id
+	 * processVar 变量（如果流程有分支,根据变量来决定走哪条分支）
+	 */
+	GetFirstCheckNode(processKey, userId string, processVar map[string]any) (node Node, err error)
+
+	/**
+	 * 审批时，根据当前任务Id查询下一个节点
+	 */
 	GetNextNodes(taskId string, processVar map[string]any) (nodes []Node, err error)
 }
 
@@ -40,6 +52,24 @@ func (p ProcessDefineServiceImpl) GetNodes(processKey, userId string, processVar
 		return
 	}
 	nodes = result.Data
+	return
+}
+
+func (p ProcessDefineServiceImpl) GetFirstCheckNode(processKey, userId string, processVar map[string]any) (node Node, err error) {
+	param := map[string]any{
+		"processKey": processKey,
+		"userId":     userId,
+		"processVar": processVar,
+	}
+	result, err := httpPost[Node](p.client, "client/define/getFirstCheckNode", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+		return
+	}
+	node = result.Data
 	return
 }
 
