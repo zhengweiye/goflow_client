@@ -629,6 +629,7 @@ type InstanceDetail struct {
 	SubProcess     bool                `json:"subProcess"`
 	BusinessId     string              `json:"businessId"`
 	BusinessTitle  string              `json:"businessTitle"`
+	BusinessTable  string              `json:"businessTable"`
 	TypeCode       string              `json:"typeCode"`
 	TypeName       string              `json:"typeName"`
 	Fields         []InstanceListField `json:"fields"`
