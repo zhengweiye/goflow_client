@@ -32,6 +32,11 @@ type ProcessInstanceService interface {
 	Cancel(instanceId, userId string) (err error)
 
 	/**
+	 * 终止实例
+	 */
+	Stop(instanceId, userId, reason string) (err error)
+
+	/**
 	 * 获取流程类型集合
 	 */
 	GetTypeList() (list []ProcessType, err error)
@@ -192,6 +197,23 @@ func (p ProcessInstanceServiceImpl) Cancel(instanceId, userId string) (err error
 		"userId":     userId,
 	}
 	result, err := httpPost[any](p.client, "client/instance/cancel", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+		return
+	}
+	return
+}
+
+func (p ProcessInstanceServiceImpl) Stop(instanceId, userId, reason string) (err error) {
+	param := map[string]any{
+		"instanceId": instanceId,
+		"userId":     userId,
+		"reason":     reason,
+	}
+	result, err := httpPost[any](p.client, "client/instance/stop", param)
 	if err != nil {
 		return
 	}
