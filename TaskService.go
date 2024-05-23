@@ -22,6 +22,7 @@ type TaskService interface {
 	 */
 	GetHandleByUserId(instanceId, userId, nodeKey string) (taskHandles []TaskHandle, err error)
 	GetHandleByTaskId(taskId string) (taskHandles []TaskHandle, err error)
+	GetHandleByInstanceId(instanceId string) (taskHandles []TaskHandle, err error)
 
 	/**
 	 * 抄送已读
@@ -141,6 +142,22 @@ func (t TaskServiceImpl) GetHandleByTaskId(taskId string) (taskHandles []TaskHan
 		"taskId": taskId,
 	}
 	result, err := httpPost[[]TaskHandle](t.client, "client/task/getHandleByTaskId", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+		return
+	}
+	taskHandles = result.Data
+	return
+}
+
+func (t TaskServiceImpl) GetHandleByInstanceId(instanceId string) (taskHandles []TaskHandle, err error) {
+	param := map[string]any{
+		"instanceId": instanceId,
+	}
+	result, err := httpPost[[]TaskHandle](t.client, "client/task/getHandleByInstanceId", param)
 	if err != nil {
 		return
 	}
@@ -334,9 +351,12 @@ type TaskResult struct {
 type TaskHandle struct {
 	UserId           string `json:"userId"`
 	UserName         string `json:"userName"`
+	NodeKey          string `json:"nodeKey"`
+	NodeName         string `json:"nodeName"`
 	HandleResultCode string `json:"handleResultCode"`
 	HandleResultName string `json:"handleResultName"`
 	HandleOpinion    string `json:"handleOpinion"`
+	HandleRemark     string `json:"handleRemark"`
 	SignFileId       string `json:"signFileId"`
 	SignFilePath     string `json:"signFilePath"`
 }
