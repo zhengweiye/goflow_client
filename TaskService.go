@@ -302,6 +302,7 @@ type ExecutionRequest struct {
 	UserId            string         `json:"userId"`            // 用户Id（必填）
 	HandleResult      string         `json:"handleResult"`      // 是否通过,继续往下流转（必填）
 	HandleOpinion     string         `json:"handleOpinion"`     // 审批意见（选填）
+	HandleRemark      string         `json:"handleRemark"`      // 备注
 	ForceEnd          bool           `json:"forceEnd"`          // 强制结束流程, 当前人审批通过时(此时流程尚未结束),其可以直接结束流程,而不往下继续
 	Variable          map[string]any `json:"variable"`          // 变量（选填）
 	NextHandleUserIds []string       `json:"nextHandleUserIds"` // 下一个节点审批人（选填）

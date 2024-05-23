@@ -5,7 +5,7 @@ import (
 	"github.com/zhengweiye/goflow_client"
 )
 
-func main1() {
+func main() {
 	client := goflow_client.Create(goflow_client.Option{
 		//Host:      "http://127.0.0.1:8888",
 		Host:      "https://zhifa.cftzqinzhou.com",
@@ -15,22 +15,13 @@ func main1() {
 	})
 	instanceResult, err := client.GetProcessInstanceService().Start(goflow_client.StartRequest{
 		StartUserId:   "16",
-		ProcessKey:    "case_main",
+		ProcessKey:    "leave",
 		AutoSubmit:    true,
-		BusinessId:    "111",
-		BusinessTitle: "测试案件",
+		BusinessId:    "1",
+		BusinessTitle: "请假",
 		Fields: []goflow_client.Field{
 			{Key: "days", Name: "请假天数", Value: "1天", SortNum: 1},
 			{Key: "reason", Name: "请假理由", Value: "家里有事", SortNum: 2},
-		},
-		Variable: map[string]any{
-			"days": 2,
-		},
-		Users: []goflow_client.NodeUsers{
-			{
-				NodeId:  "Mjn0M-O5",
-				UserIds: []string{"16"},
-			},
 		},
 	})
 	fmt.Println("异常：", err)
