@@ -357,6 +357,7 @@ type TaskHandle struct {
 	HandleResultName string `json:"handleResultName"`
 	HandleOpinion    string `json:"handleOpinion"`
 	HandleRemark     string `json:"handleRemark"`
+	HandleTime       string `json:"handleTime"`
 	SignFileId       string `json:"signFileId"`
 	SignFilePath     string `json:"signFilePath"`
 }
