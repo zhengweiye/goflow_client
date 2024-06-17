@@ -707,6 +707,8 @@ type InstanceDealList struct {
 	FinishTime    string              `json:"finishTime"` // 实例完成时间
 	LimitTime     string              `json:"limitTime"`
 	TaskId        string              `json:"taskId"`
+	NodeKey       string              `json:"nodeKey"`
+	NodeName      string              `json:"nodeName"`
 }
 
 type InstanceAllQuery struct {
