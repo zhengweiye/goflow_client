@@ -34,7 +34,7 @@ type ProcessInstanceService interface {
 	/**
 	 * 终止实例
 	 */
-	Stop(instanceId, userId, reason string) (err error)
+	Stop(instanceId, reason string) (err error)
 
 	/**
 	 * 获取流程类型集合
@@ -207,10 +207,9 @@ func (p ProcessInstanceServiceImpl) Cancel(instanceId, userId string) (err error
 	return
 }
 
-func (p ProcessInstanceServiceImpl) Stop(instanceId, userId, reason string) (err error) {
+func (p ProcessInstanceServiceImpl) Stop(instanceId, reason string) (err error) {
 	param := map[string]any{
 		"instanceId": instanceId,
-		"userId":     userId,
 		"reason":     reason,
 	}
 	result, err := httpPost[any](p.client, "client/instance/stop", param)
