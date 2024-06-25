@@ -37,6 +37,11 @@ type ProcessInstanceService interface {
 	Stop(instanceId, reason string) (err error)
 
 	/**
+	 * 删除实例
+	 */
+	Delete(instanceId string) (err error)
+
+	/**
 	 * 获取流程类型集合
 	 */
 	GetTypeList() (list []ProcessType, err error)
@@ -213,6 +218,21 @@ func (p ProcessInstanceServiceImpl) Stop(instanceId, reason string) (err error) 
 		"reason":     reason,
 	}
 	result, err := httpPost[any](p.client, "client/instance/stop", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+		return
+	}
+	return
+}
+
+func (p ProcessInstanceServiceImpl) Delete(instanceId string) (err error) {
+	param := map[string]any{
+		"instanceId": instanceId,
+	}
+	result, err := httpPost[any](p.client, "client/instance/delete", param)
 	if err != nil {
 		return
 	}
