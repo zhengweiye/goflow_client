@@ -570,16 +570,17 @@ func (p ProcessInstanceServiceImpl) AddFields(instanceId, userId string, fields 
 }
 
 type StartRequest struct {
-	StartUserId   string         `json:"startUserId"`   // 发起人Id（必填）
-	ProcessKey    string         `json:"processKey"`    // 流程标识（必填）
-	AutoSubmit    bool           `json:"autoSubmit"`    // 是否自动第一个发起节点（必填）
-	BusinessId    string         `json:"businessId"`    // 业务Id（必填）
-	BusinessTitle string         `json:"businessTitle"` // 业务标题（必填）
-	Fields        []Field        `json:"fields"`        // 列表字段（选填）
-	Users         []NodeUsers    `json:"users"`         // 启动时,各个节点对应的负责人（选填）
-	NextUserIds   []string       `json:"nextUserIds"`   // 启动时,手工选择第一个节点的审批人
-	Variable      map[string]any `json:"variable"`      // 变量（选填）
-	Remark        string         `json:"remark"`        // 备注（选填）
+	StartUserId      string         `json:"startUserId"`      // 发起人Id（必填）
+	ProcessKey       string         `json:"processKey"`       // 流程标识（必填）
+	AutoSubmit       bool           `json:"autoSubmit"`       // 是否自动第一个发起节点（必填）
+	BusinessId       string         `json:"businessId"`       // 业务Id（必填）
+	BusinessTitle    string         `json:"businessTitle"`    // 业务标题（必填）
+	Fields           []Field        `json:"fields"`           // 列表字段（选填）
+	Users            []NodeUsers    `json:"users"`            // 启动时,各个节点对应的负责人（选填）
+	NextUserIds      []string       `json:"nextUserIds"`      // 启动时,手工选择第一个节点的审批人
+	EndNoticeUserIds []string       `json:"endNoticeUserIds"` // 审批结束时,通知人员Id
+	Variable         map[string]any `json:"variable"`         // 变量（选填）
+	Remark           string         `json:"remark"`           // 备注（选填）
 }
 
 type StartChildRequest struct {
