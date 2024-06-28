@@ -12,9 +12,9 @@ type ProcessInstanceService interface {
 	Start(request StartRequest) (instanceResult InstanceResult, err error)
 
 	/**
-	 * 启动子流程
+	 * 实例结束，短信通知哪些人
 	 */
-	StartChild(request StartChildRequest) (instanceResult InstanceResult, err error)
+	UpdateSmsReceiver(instanceId string, userIds []string) (err error)
 
 	/**
 	 * 回滚事务，针对启动流程时，放弃启动
@@ -147,7 +147,7 @@ func (p ProcessInstanceServiceImpl) Start(request StartRequest) (instanceResult 
 	return
 }
 
-func (p ProcessInstanceServiceImpl) StartChild(request StartChildRequest) (instanceResult InstanceResult, err error) {
+/*func (p ProcessInstanceServiceImpl) StartChild(request StartChildRequest) (instanceResult InstanceResult, err error) {
 	var param map[string]any
 	err = mapstructure.Decode(request, &param)
 	if err != nil {
@@ -161,6 +161,22 @@ func (p ProcessInstanceServiceImpl) StartChild(request StartChildRequest) (insta
 		err = fmt.Errorf(result.Msg)
 	}
 	instanceResult = result.Data
+	return
+}*/
+
+func (p ProcessInstanceServiceImpl) UpdateSmsReceiver(instanceId string, userIds []string) (err error) {
+	param := map[string]any{
+		"instanceId": instanceId,
+		"userIds":    userIds,
+	}
+	result, err := httpPost[any](p.client, "client/instance/updateSmsReceiver", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+		return
+	}
 	return
 }
 
@@ -668,7 +684,6 @@ type InstanceListField struct {
 
 type InstanceDetail struct {
 	Id             string              `json:"id"`
-	SubProcess     bool                `json:"subProcess"`
 	BusinessId     string              `json:"businessId"`
 	BusinessTitle  string              `json:"businessTitle"`
 	BusinessTable  string              `json:"businessTable"`
