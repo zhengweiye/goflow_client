@@ -30,16 +30,6 @@ type TaskService interface {
 	ReadCc(taskId, userId string) (err error)
 
 	/**
-	 * 回退权限
-	 */
-	RollbackLimit(instanceId, userId string) (allow bool, err error)
-
-	/**
-	 * 回退
-	 */
-	Rollback(instanceId, userId string) (err error)
-
-	/**
 	 * 强制回退
 	 */
 	ForceRollback(instanceId, userId string) (err error)
@@ -175,39 +165,6 @@ func (t TaskServiceImpl) ReadCc(taskId, userId string) (err error) {
 		"userId": userId,
 	}
 	result, err := httpPost[any](t.client, "client/task/read", param)
-	if err != nil {
-		return
-	}
-	if result.Code != 200 {
-		err = fmt.Errorf(result.Msg)
-		return
-	}
-	return
-}
-
-func (t TaskServiceImpl) RollbackLimit(instanceId, userId string) (allow bool, err error) {
-	param := map[string]any{
-		"instanceId": instanceId,
-		"userId":     userId,
-	}
-	result, err := httpPost[bool](t.client, "client/task/rollbackLimit", param)
-	if err != nil {
-		return
-	}
-	if result.Code != 200 {
-		err = fmt.Errorf(result.Msg)
-		return
-	}
-	allow = result.Data
-	return
-}
-
-func (t TaskServiceImpl) Rollback(instanceId, userId string) (err error) {
-	param := map[string]any{
-		"instanceId": instanceId,
-		"userId":     userId,
-	}
-	result, err := httpPost[any](t.client, "client/task/rollback", param)
 	if err != nil {
 		return
 	}
