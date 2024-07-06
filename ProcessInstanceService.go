@@ -62,7 +62,7 @@ type ProcessInstanceService interface {
 	/**
 	 * 获取实例流水
 	 */
-	GetFlows(instanceId string) (flows []InstanceFlow, err error)
+	GetLogs(instanceId string) (flows []InstanceFlow, err error)
 
 	/**
 	 * 获取实例节点集合
@@ -308,7 +308,7 @@ func (p ProcessInstanceServiceImpl) GetDetail(instanceId string) (instanceDetail
 	return
 }
 
-func (p ProcessInstanceServiceImpl) GetFlows(instanceId string) (flows []InstanceFlow, err error) {
+func (p ProcessInstanceServiceImpl) GetLogs(instanceId string) (flows []InstanceFlow, err error) {
 	param := map[string]any{
 		"instanceId": instanceId,
 	}
