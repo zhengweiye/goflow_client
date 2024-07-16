@@ -30,9 +30,14 @@ type TaskService interface {
 	ReadCc(taskId, userId string) (err error)
 
 	/**
-	 * 强制回退
+	 * 强制回退到 "userId 对应的最近一次处理"
 	 */
-	ForceRollback(instanceId, userId string) (err error)
+	RollbackLatestApproval(instanceId, userId string) (err error)
+
+	/**
+	 * 强制回退到 "指定任务"
+	 */
+	RollbackTask(taskId, userId string) (err error)
 
 	/**
 	 * 获取附件列表
@@ -175,12 +180,28 @@ func (t TaskServiceImpl) ReadCc(taskId, userId string) (err error) {
 	return
 }
 
-func (t TaskServiceImpl) ForceRollback(instanceId, userId string) (err error) {
+func (t TaskServiceImpl) RollbackLatestApproval(instanceId, userId string) (err error) {
 	param := map[string]any{
 		"instanceId": instanceId,
 		"userId":     userId,
 	}
-	result, err := httpPost[any](t.client, "client/task/forceRollback", param)
+	result, err := httpPost[any](t.client, "client/task/rollbackLatestApproval", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+		return
+	}
+	return
+}
+
+func (t TaskServiceImpl) RollbackTask(taskId, userId string) (err error) {
+	param := map[string]any{
+		"taskId": taskId,
+		"userId": userId,
+	}
+	result, err := httpPost[any](t.client, "client/task/rollbackTask", param)
 	if err != nil {
 		return
 	}
@@ -308,6 +329,7 @@ type TaskResult struct {
 type TaskHandle struct {
 	UserId           string `json:"userId"`
 	UserName         string `json:"userName"`
+	TaskId           string `json:"taskId"`
 	NodeKey          string `json:"nodeKey"`
 	NodeName         string `json:"nodeName"`
 	HandleResultCode string `json:"handleResultCode"`
