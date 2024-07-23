@@ -10,7 +10,7 @@ type TaskService interface {
 	/**
 	 * 查询任务详情
 	 */
-	GetTask(taskId string) (task TaskVo, err error)
+	GetTask(taskId string) (task *TaskVo, err error)
 
 	/**
 	 * 获取当前任务对应的处理结果
@@ -86,11 +86,11 @@ func getTaskService(client *Client) TaskService {
 	}
 }
 
-func (t TaskServiceImpl) GetTask(taskId string) (task TaskVo, err error) {
+func (t TaskServiceImpl) GetTask(taskId string) (task *TaskVo, err error) {
 	param := map[string]any{
 		"taskId": taskId,
 	}
-	result, err := httpPost[TaskVo](t.client, "client/task/getTask", param)
+	result, err := httpPost[*TaskVo](t.client, "client/task/getTask", param)
 	if err != nil {
 		return
 	}
