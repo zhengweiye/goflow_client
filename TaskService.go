@@ -3,9 +3,15 @@ package goflow_client
 import (
 	"fmt"
 	"github.com/mitchellh/mapstructure"
+	"time"
 )
 
 type TaskService interface {
+	/**
+	 * 查询任务详情
+	 */
+	GetTask(taskId string) (task TaskVo, err error)
+
 	/**
 	 * 获取当前任务对应的处理结果
 	 * taskId 任务Id
@@ -78,6 +84,22 @@ func getTaskService(client *Client) TaskService {
 	return TaskServiceImpl{
 		client: client,
 	}
+}
+
+func (t TaskServiceImpl) GetTask(taskId string) (task TaskVo, err error) {
+	param := map[string]any{
+		"taskId": taskId,
+	}
+	result, err := httpPost[TaskVo](t.client, "client/task/getTask", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+		return
+	}
+	task = result.Data
+	return
 }
 
 func (t TaskServiceImpl) GetTaskResults(taskId string) (results []TaskResult, err error) {
@@ -345,4 +367,20 @@ type Task struct {
 	Id    string `json:"id"`
 	Name  string `json:"name"`
 	Users []User `json:"users"`
+}
+
+type TaskVo struct {
+	Id           string
+	TenantId     string
+	EnvId        string
+	InstanceId   string
+	PrevTaskId   *string
+	Key          string
+	Name         string
+	Type         string
+	EndTime      *time.Time
+	State        string
+	HandleResult *string
+	CreateTime   time.Time
+	SortNo       int64
 }
