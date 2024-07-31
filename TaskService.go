@@ -74,6 +74,11 @@ type TaskService interface {
 	 * 减签
 	 */
 	RemoveUsers(taskId string, userIds []string) (err error)
+
+	/**
+	 * 根据任务Id获取对应 “流程节点” 的配置信息
+	 */
+	GetTaskNodeConf(taskId string) (taskNodeConf TaskNodeConfVo, err error)
 }
 
 type TaskServiceImpl struct {
@@ -314,6 +319,22 @@ func (t TaskServiceImpl) RemoveUsers(taskId string, userIds []string) (err error
 	return
 }
 
+func (t TaskServiceImpl) GetTaskNodeConf(taskId string) (taskNodeConf TaskNodeConfVo, err error) {
+	param := map[string]any{
+		"taskId": taskId,
+	}
+	result, err := httpPost[TaskNodeConfVo](t.client, "client/task/getTaskNodeConf", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+		return
+	}
+	taskNodeConf = result.Data
+	return
+}
+
 type ExecutionRequest struct {
 	TaskId            string         `json:"taskId"`            // 任务Id（必填）
 	UserId            string         `json:"userId"`            // 用户Id（必填）
@@ -383,4 +404,11 @@ type TaskVo struct {
 	HandleResult *string
 	CreateTime   time.Time
 	SortNo       int64
+}
+
+type TaskNodeConfVo struct {
+	PerformType         string  // 审批模式（orSign-或签（只需一个人审批）；counterSign-会签（每个人都要审批））
+	CounterSignSequence string  // 会签顺序（order-顺序执行,parallel-同时执行）
+	PassVoteSymbol      string  // 会签通过符号（eq-等于,gt-大于,gte-大于等于,neq-不等于,lt-小于,lte-小于等于）
+	PassVoteRate        float32 // 会签通过比例（该节点通过人数的比例）
 }
