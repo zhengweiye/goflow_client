@@ -43,7 +43,7 @@ type TaskService interface {
 	/**
 	 * 强制回退到 "指定任务"
 	 */
-	RollbackTask(taskId, userId string) (err error)
+	RollbackTask(taskId string) (err error)
 
 	/**
 	 * 获取附件列表
@@ -223,10 +223,9 @@ func (t TaskServiceImpl) RollbackLatestApproval(instanceId, userId string) (err 
 	return
 }
 
-func (t TaskServiceImpl) RollbackTask(taskId, userId string) (err error) {
+func (t TaskServiceImpl) RollbackTask(taskId string) (err error) {
 	param := map[string]any{
 		"taskId": taskId,
-		"userId": userId,
 	}
 	result, err := httpPost[any](t.client, "client/task/rollbackTask", param)
 	if err != nil {
