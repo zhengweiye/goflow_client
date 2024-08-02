@@ -13,6 +13,11 @@ type TaskService interface {
 	GetTask(taskId string) (task *TaskVo, err error)
 
 	/**
+	 * 查询任务集合
+	 */
+	GetTasks(instanceId string) (tasks []TaskListVo, err error)
+
+	/**
 	 * 获取当前任务对应的处理结果
 	 * taskId 任务Id
 	 */
@@ -104,6 +109,22 @@ func (t TaskServiceImpl) GetTask(taskId string) (task *TaskVo, err error) {
 		return
 	}
 	task = result.Data
+	return
+}
+
+func (t TaskServiceImpl) GetTasks(instanceId string) (tasks []TaskListVo, err error) {
+	param := map[string]any{
+		"instanceId": instanceId,
+	}
+	result, err := httpPost[[]TaskListVo](t.client, "client/task/getTasks", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+		return
+	}
+	tasks = result.Data
 	return
 }
 
@@ -390,24 +411,46 @@ type Task struct {
 }
 
 type TaskVo struct {
-	Id           string
-	TenantId     string
-	EnvId        string
-	InstanceId   string
-	PrevTaskId   *string
-	Key          string
-	Name         string
-	Type         string
-	EndTime      *time.Time
-	State        string
-	HandleResult *string
-	CreateTime   time.Time
-	SortNo       int64
+	Id           string     `json:"id"`
+	TenantId     string     `json:"tenantId"`
+	EnvId        string     `json:"envId"`
+	InstanceId   string     `json:"instanceId"`
+	PrevTaskId   *string    `json:"prevTaskId"`
+	Key          string     `json:"key"`
+	Name         string     `json:"name"`
+	Type         string     `json:"type"`
+	EndTime      *time.Time `json:"endTime"`
+	State        string     `json:"state"`
+	HandleResult *string    `json:"handleResult"`
+	CreateTime   time.Time  `json:"createTime"`
+	SortNo       int64      `json:"sortNo"`
 }
 
 type TaskNodeConfVo struct {
-	PerformType         string  // 审批模式（orSign-或签（只需一个人审批）；counterSign-会签（每个人都要审批））
-	CounterSignSequence string  // 会签顺序（order-顺序执行,parallel-同时执行）
-	PassVoteSymbol      string  // 会签通过符号（eq-等于,gt-大于,gte-大于等于,neq-不等于,lt-小于,lte-小于等于）
-	PassVoteRate        float32 // 会签通过比例（该节点通过人数的比例）
+	PerformType         string  `json:"performType"`         // 审批模式（orSign-或签（只需一个人审批）；counterSign-会签（每个人都要审批））
+	CounterSignSequence string  `json:"counterSignSequence"` // 会签顺序（order-顺序执行,parallel-同时执行）
+	PassVoteSymbol      string  `json:"passVoteSymbol"`      // 会签通过符号（eq-等于,gt-大于,gte-大于等于,neq-不等于,lt-小于,lte-小于等于）
+	PassVoteRate        float32 `json:"passVoteRate"`        // 会签通过比例（该节点通过人数的比例）
+}
+
+type TaskListVo struct {
+	Id           string     `json:"id"`
+	Key          string     `json:"key"`
+	Name         string     `json:"name"`
+	Type         string     `json:"type"`
+	EndTime      *time.Time `json:"endTime"`
+	State        string     `json:"state"`
+	HandleResult *string    `json:"handleResult"`
+	CreateTime   time.Time  `json:"createTime"`
+	Users        []string   `json:"users"`
+}
+
+type TaskUser struct {
+	UserId           string `json:"userId"`
+	UserName         string `json:"userName"`
+	HandleResultCode string `json:"handleResultCode"`
+	HandleResultName string `json:"handleResultName"`
+	HandleOpinion    string `json:"handleOpinion"`
+	HandleRemark     string `json:"handleRemark"`
+	HandleTime       string `json:"handleTime"`
 }
