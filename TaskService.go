@@ -442,7 +442,7 @@ type TaskListVo struct {
 	State        string     `json:"state"`
 	HandleResult *string    `json:"handleResult"`
 	CreateTime   time.Time  `json:"createTime"`
-	Users        []string   `json:"users"`
+	Users        []TaskUser `json:"users"`
 }
 
 type TaskUser struct {
