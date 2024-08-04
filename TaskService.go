@@ -446,11 +446,11 @@ type TaskListVo struct {
 }
 
 type TaskUser struct {
-	UserId           string `json:"userId"`
-	UserName         string `json:"userName"`
-	HandleResultCode string `json:"handleResultCode"`
-	HandleResultName string `json:"handleResultName"`
-	HandleOpinion    string `json:"handleOpinion"`
-	HandleRemark     string `json:"handleRemark"`
-	HandleTime       string `json:"handleTime"`
+	UserId        string     `json:"userId"`
+	UserName      string     `json:"userName"`
+	State         string     `json:"state"`
+	HandleResult  *string    `json:"handleResult"`
+	HandleOpinion string     `json:"handleOpinion"`
+	HandleRemark  string     `json:"handleRemark"`
+	HandleTime    *time.Time `json:"handleTime"`
 }
