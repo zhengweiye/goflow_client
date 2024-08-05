@@ -82,7 +82,7 @@ func httpPost[T any](client *Client, methodPath string, param any) (data Result[
 	}
 
 	//TODO 反序列化
-	fmt.Printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>%+v\n", string(resBytes))
+	fmt.Printf("[工作流] 响应数据: %+v\n", string(resBytes))
 	var m = make(map[string]any)
 	err = json.Unmarshal(resBytes, &m)
 	if err != nil {
