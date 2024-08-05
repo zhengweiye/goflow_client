@@ -3,7 +3,6 @@ package goflow_client
 import (
 	"fmt"
 	"github.com/mitchellh/mapstructure"
-	"time"
 )
 
 type TaskService interface {
@@ -438,19 +437,19 @@ type TaskVo struct {
 	Key          string     `json:"key"`
 	Name         string     `json:"name"`
 	Type         string     `json:"type"`
-	EndTime      *time.Time `json:"endTime"`
+	EndTime      string     `json:"endTime"`
 	State        string     `json:"state"`
-	HandleResult *string    `json:"handleResult"`
-	CreateTime   time.Time  `json:"createTime"`
+	HandleResult string     `json:"handleResult"`
+	CreateTime   string     `json:"createTime"`
 	Users        []TaskUser `json:"users"`
 }
 
 type TaskUser struct {
-	UserId        string     `json:"userId"`
-	UserName      string     `json:"userName"`
-	State         string     `json:"state"`
-	HandleResult  *string    `json:"handleResult"`
-	HandleOpinion string     `json:"handleOpinion"`
-	HandleRemark  string     `json:"handleRemark"`
-	HandleTime    *time.Time `json:"handleTime"`
+	UserId        string `json:"userId"`
+	UserName      string `json:"userName"`
+	State         string `json:"state"`
+	HandleResult  string `json:"handleResult"`
+	HandleOpinion string `json:"handleOpinion"`
+	HandleRemark  string `json:"handleRemark"`
+	HandleTime    string `json:"handleTime"`
 }
