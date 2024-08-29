@@ -40,6 +40,7 @@ type ProcessInstanceService interface {
 	 * 删除实例
 	 */
 	Delete(instanceId string) (err error)
+	DeleteBatch(instanceIds []string) (err error)
 
 	/**
 	 * 获取流程类型集合
@@ -249,6 +250,21 @@ func (p ProcessInstanceServiceImpl) Delete(instanceId string) (err error) {
 		"instanceId": instanceId,
 	}
 	result, err := httpPost[any](p.client, "client/instance/delete", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+		return
+	}
+	return
+}
+
+func (p ProcessInstanceServiceImpl) DeleteBatch(instanceIds []string) (err error) {
+	param := map[string]any{
+		"ids": instanceIds,
+	}
+	result, err := httpPost[any](p.client, "client/instance/deleteBatch", param)
 	if err != nil {
 		return
 	}
