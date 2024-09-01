@@ -645,9 +645,9 @@ type InstanceResult struct {
 }
 
 type InstanceState struct {
-	Code  string `json:"code"`
-	Name  string `json:"name"`
-	Color string `json:"color"`
+	Code  string `json:"code"`  // 实例状态编码（cancel-取消,draft-草稿,doing-正在处理,实例结果-在工作流后台动态配置）
+	Name  string `json:"name"`  // 实例状态名称
+	Color string `json:"color"` // 实例状态颜色
 }
 
 type InstanceFlow struct {
