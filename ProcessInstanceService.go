@@ -713,7 +713,6 @@ type InstanceDetail struct {
 	CreateTime     string              `json:"createTime"`
 	DoingTasks     []DoingTask         `json:"doingTasks"`
 	State          InstanceState       `json:"state"`
-	StateShow      InstanceState       `json:"stateShow"`
 }
 
 type DoingTask struct {
