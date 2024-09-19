@@ -601,6 +601,8 @@ func (p ProcessInstanceServiceImpl) AddFields(instanceId, userId string, fields 
 	return
 }
 
+/*-------------------------------------------------------------------------------------------------------*/
+
 type StartRequest struct {
 	StartUserId      string         `json:"startUserId"`      // 发起人Id（必填）
 	ProcessKey       string         `json:"processKey"`       // 流程标识（必填）
@@ -632,11 +634,6 @@ type NodeUsers struct {
 	UserIds []string `json:"userIds"`
 }
 
-type ProcessType struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
-}
-
 type InstanceResult struct {
 	Id           string        `json:"id"`           // 实例Id
 	State        InstanceState `json:"state"`        // 实例状态（cancel-取消,draft-草稿,doing-正在处理,实例结果-在工作流后台动态配置）
@@ -649,6 +646,15 @@ type InstanceState struct {
 	Name  string `json:"name"`  // 实例状态名称
 	Color string `json:"color"` // 实例状态颜色
 }
+
+/*-------------------------------------------------------------------------------------------------------*/
+
+type ProcessType struct {
+	Id   string `json:"id"`
+	Name string `json:"name"`
+}
+
+/*-------------------------------------------------------------------------------------------------------*/
 
 type InstanceFlow struct {
 	OperUser    string `json:"operUser"`
@@ -698,6 +704,8 @@ type InstanceListField struct {
 	Value string `json:"value"`
 }
 
+/*-------------------------------------------------------------------------------------------------------*/
+
 type InstanceDetail struct {
 	Id             string              `json:"id"`
 	BusinessId     string              `json:"businessId"`
@@ -712,6 +720,7 @@ type InstanceDetail struct {
 	CreateUserName string              `json:"createUserName"`
 	CreateTime     string              `json:"createTime"`
 	DoingTasks     []DoingTask         `json:"doingTasks"`
+	DoneTasks      []DoneTask          `json:"doneTasks"`
 	State          InstanceState       `json:"state"`
 }
 
@@ -723,43 +732,27 @@ type DoingTask struct {
 	UserIds  []string `json:"userIds"`
 }
 
-type InstanceList struct {
-	Id            string              `json:"id"`
-	BusinessId    string              `json:"businessId"`
-	BusinessTitle string              `json:"businessTitle"`
-	TypeCode      string              `json:"typeCode"` // 流程类型
-	TypeName      string              `json:"typeName"` // 流程类型
-	Fields        []InstanceListField `json:"fields"`
-	State         State               `json:"state"`
-	CreateUser    string              `json:"createUser"`
-	CreateTime    string              `json:"createTime"`
-	FinishTime    string              `json:"finishTime"` // 实例完成时间
-	LimitTime     string              `json:"limitTime"`
-	CurNodeName   string              `json:"curNodeName"`
-	ConsumeTime   string              `json:"consumeTime"` // 耗时
-	IsOverDate    bool                `json:"isOverDate"`  // 是否逾期
-	IsNearDate    bool                `json:"isNearDate"`  // 是否临期
-	OverDate      string              `json:"overDate"`
-	NearDate      string              `json:"nearDate"`
-	UrgeCount     int                 `json:"urgeCount"` // 催办次数
+type DoneTask struct {
+	TaskId       string          `json:"taskId"`
+	NodeId       string          `json:"nodeId"`
+	NodeName     string          `json:"nodeName"`
+	State        string          `json:"state"`
+	HandleResult string          `json:"handleResult"`
+	EndTime      string          `json:"endTime"`
+	Actors       []DoneTaskActor `json:"actors"`
 }
 
-type InstanceDealList struct {
-	Id            string              `json:"id"`
-	BusinessId    string              `json:"businessId"`
-	BusinessTitle string              `json:"businessTitle"`
-	TypeCode      string              `json:"typeCode"` // 流程类型
-	TypeName      string              `json:"typeName"` // 流程类型
-	Fields        []InstanceListField `json:"fields"`
-	State         State               `json:"state"`
-	CreateUser    string              `json:"createUser"`
-	CreateTime    string              `json:"createTime"`
-	FinishTime    string              `json:"finishTime"` // 实例完成时间
-	LimitTime     string              `json:"limitTime"`
-	TaskId        string              `json:"taskId"`
-	NodeKey       string              `json:"nodeKey"`
-	NodeName      string              `json:"nodeName"`
+type DoneTaskActor struct {
+	UserId        string `json:"userId"`
+	UserName      string `json:"userName"`
+	State         string `json:"state"`
+	HandleResult  string `json:"handleResult"`
+	HandleOpinion string `json:"handleOpinion"`
+	HandleRemark  string `json:"handleRemark"`
+	HandleTime    string `json:"handleTime"`
 }
+
+/*-------------------------------------------------------------------------------------------------------*/
 
 type InstanceAllQuery struct {
 	CurPage         int      `json:"curPage"`         // 当前页码（必填）
@@ -815,4 +808,46 @@ type InstanceCcQuery struct {
 	ProcessKey      string `json:"processKey"`      // 流程类型（选填）
 	Title           string `json:"title"`           // 标题（选填）
 	CurUserId       string `json:"curUserId"`       // 用户id（必填）
+}
+
+/*-------------------------------------------------------------------------------------------------------*/
+
+type InstanceList struct {
+	Id            string              `json:"id"`
+	BusinessId    string              `json:"businessId"`
+	BusinessTitle string              `json:"businessTitle"`
+	TypeCode      string              `json:"typeCode"` // 流程类型
+	TypeName      string              `json:"typeName"` // 流程类型
+	Fields        []InstanceListField `json:"fields"`
+	State         State               `json:"state"`
+	CreateUser    string              `json:"createUser"`
+	CreateTime    string              `json:"createTime"`
+	FinishTime    string              `json:"finishTime"` // 实例完成时间
+	LimitTime     string              `json:"limitTime"`
+
+	CurNodeName string `json:"curNodeName"`
+	ConsumeTime string `json:"consumeTime"` // 耗时
+	IsOverDate  bool   `json:"isOverDate"`  // 是否逾期
+	IsNearDate  bool   `json:"isNearDate"`  // 是否临期
+	OverDate    string `json:"overDate"`
+	NearDate    string `json:"nearDate"`
+	UrgeCount   int    `json:"urgeCount"` // 催办次数
+}
+
+type InstanceDealList struct {
+	Id            string              `json:"id"`
+	BusinessId    string              `json:"businessId"`
+	BusinessTitle string              `json:"businessTitle"`
+	TypeCode      string              `json:"typeCode"` // 流程类型
+	TypeName      string              `json:"typeName"` // 流程类型
+	Fields        []InstanceListField `json:"fields"`
+	State         State               `json:"state"`
+	CreateUser    string              `json:"createUser"`
+	CreateTime    string              `json:"createTime"`
+	FinishTime    string              `json:"finishTime"` // 实例完成时间
+	LimitTime     string              `json:"limitTime"`
+
+	TaskId   string `json:"taskId"`
+	NodeKey  string `json:"nodeKey"`
+	NodeName string `json:"nodeName"`
 }
