@@ -80,6 +80,11 @@ type TaskService interface {
 	RemoveUsers(taskId string, userIds []string) (err error)
 
 	/**
+	 * 变更某个流程下，正在办理任务的处理人
+	 */
+	ChangeUsers(processKey string, userIds []string) (err error)
+
+	/**
 	 * 根据任务Id获取对应 “流程节点” 的配置信息
 	 */
 	GetTaskNodeConf(taskId string) (taskNodeConf TaskNodeConfVo, err error)
@@ -328,6 +333,22 @@ func (t TaskServiceImpl) RemoveUsers(taskId string, userIds []string) (err error
 		"userIds": userIds,
 	}
 	result, err := httpPost[any](t.client, "client/task/removeUsers", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+		return
+	}
+	return
+}
+
+func (t TaskServiceImpl) ChangeUsers(processKey string, userIds []string) (err error) {
+	param := map[string]any{
+		"processKey": processKey,
+		"userIds":    userIds,
+	}
+	result, err := httpPost[any](t.client, "client/task/changeUsers", param)
 	if err != nil {
 		return
 	}
