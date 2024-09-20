@@ -80,9 +80,10 @@ type TaskService interface {
 	RemoveUsers(taskId string, userIds []string) (err error)
 
 	/**
-	 * 变更某个流程下，正在办理任务的处理人
+	 * 替换某个流程下，某个任务的负责人-->只使用于或签模式
+	 * nodeId和nodeName 二选一
 	 */
-	ChangeUsers(processKey string, userIds []string) (err error)
+	ReplaceUsers(processKey, nodeId, nodeName string, userIds []string) (err error)
 
 	/**
 	 * 根据任务Id获取对应 “流程节点” 的配置信息
@@ -343,12 +344,14 @@ func (t TaskServiceImpl) RemoveUsers(taskId string, userIds []string) (err error
 	return
 }
 
-func (t TaskServiceImpl) ChangeUsers(processKey string, userIds []string) (err error) {
+func (t TaskServiceImpl) ReplaceUsers(processKey, nodeId, nodeName string, userIds []string) (err error) {
 	param := map[string]any{
 		"processKey": processKey,
+		"nodeId":     nodeId,
+		"nodeName":   nodeName,
 		"userIds":    userIds,
 	}
-	result, err := httpPost[any](t.client, "client/task/changeUsers", param)
+	result, err := httpPost[any](t.client, "client/task/replaceUsers", param)
 	if err != nil {
 		return
 	}
