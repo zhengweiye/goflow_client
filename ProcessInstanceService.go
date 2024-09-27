@@ -755,59 +755,59 @@ type DoneTaskActor struct {
 /*-------------------------------------------------------------------------------------------------------*/
 
 type InstanceAllQuery struct {
-	CurPage         int      `json:"curPage"`         // 当前页码（必填）
-	PageSize        int      `json:"pageSize"`        // 每页记录数（必填）
-	ProcessCategory string   `json:"processCategory"` // 流程分类（选填）
-	ProcessKey      string   `json:"processKey"`      // 流程类型（选填）
-	Title           string   `json:"title"`           // 标题（选填）
-	State           string   `json:"state"`           // 状态（选填）
-	UserIds         []string `json:"userIds"`         // 查看的用户id数组（必填）
-	OverDate        bool     `json:"overDate"`        // 查看逾期
-	NearDate        bool     `json:"nearDate"`        // 查看临期
-	IncludeCancel   bool     `json:"includeCancel"`   // 是否包含已撤销、草稿的记录
+	CurPage          int      `json:"curPage"`          // 当前页码（必填）
+	PageSize         int      `json:"pageSize"`         // 每页记录数（必填）
+	ProcessCategorys []string `json:"processCategorys"` // 流程分类（选填）
+	ProcessKeys      []string `json:"processKeys"`      // 流程类型（选填）
+	Title            string   `json:"title"`            // 标题（选填）
+	State            string   `json:"state"`            // 状态（选填）
+	UserIds          []string `json:"userIds"`          // 查看的用户id数组（必填）
+	OverDate         bool     `json:"overDate"`         // 查看逾期
+	NearDate         bool     `json:"nearDate"`         // 查看临期
+	IncludeCancel    bool     `json:"includeCancel"`    // 是否包含已撤销、草稿的记录
 }
 
 type InstanceCreateQuery struct {
-	CurPage         int    `json:"curPage"`         // 当前页码（必填）
-	PageSize        int    `json:"pageSize"`        // 每页记录数（必填）
-	ProcessCategory string `json:"processCategory"` // 流程分类（选填）
-	ProcessKey      string `json:"processKey"`      // 流程类型（选填）
-	Title           string `json:"title"`           // 标题（选填）
-	State           string `json:"state"`           // 状态（选填）
-	CurUserId       string `json:"curUserId"`       // 用户id（必填）
-	OverDate        bool   `json:"overDate"`        // 查看逾期
-	NearDate        bool   `json:"nearDate"`        // 查看临期
+	CurPage          int      `json:"curPage"`          // 当前页码（必填）
+	PageSize         int      `json:"pageSize"`         // 每页记录数（必填）
+	ProcessCategorys []string `json:"processCategorys"` // 流程分类（选填）
+	ProcessKeys      []string `json:"processKeys"`      // 流程类型（选填）
+	Title            string   `json:"title"`            // 标题（选填）
+	State            string   `json:"state"`            // 状态（选填）
+	CurUserId        string   `json:"curUserId"`        // 用户id（必填）
+	OverDate         bool     `json:"overDate"`         // 查看逾期
+	NearDate         bool     `json:"nearDate"`         // 查看临期
 }
 
 type InstanceTodoQuery struct {
-	CurPage         int      `json:"curPage"`         // 当前页码（必填）
-	PageSize        int      `json:"pageSize"`        // 每页记录数（必填）
-	ProcessCategory string   `json:"processCategory"` // 流程分类（选填）
-	ProcessKey      string   `json:"processKey"`      // 流程类型（选填）
-	Title           string   `json:"title"`           // 标题（选填）
-	CurUserId       string   `json:"curUserId"`       // 用户id（必填）
-	IncludeNodeKeys []string `json:"includeNodeKeys"` // 包含哪些节点,为空则包含所有节点（选填）
-	ExcludeNodeKeys []string `json:"excludeNodeKeys"` // 排除哪些节点,为空则不排除任何节点（选填）
+	CurPage          int      `json:"curPage"`          // 当前页码（必填）
+	PageSize         int      `json:"pageSize"`         // 每页记录数（必填）
+	ProcessCategorys []string `json:"processCategorys"` // 流程分类（选填）
+	ProcessKeys      []string `json:"processKeys"`      // 流程类型（选填）
+	Title            string   `json:"title"`            // 标题（选填）
+	CurUserId        string   `json:"curUserId"`        // 用户id（必填）
+	IncludeNodeKeys  []string `json:"includeNodeKeys"`  // 包含哪些节点,为空则包含所有节点（选填）
+	ExcludeNodeKeys  []string `json:"excludeNodeKeys"`  // 排除哪些节点,为空则不排除任何节点（选填）
 }
 
 type InstanceDoneQuery struct {
-	CurPage         int      `json:"curPage"`         // 当前页码（必填）
-	PageSize        int      `json:"pageSize"`        // 每页记录数（必填）
-	ProcessCategory string   `json:"processCategory"` // 流程分类（选填）
-	ProcessKey      string   `json:"processKey"`      // 流程类型（选填）
-	Title           string   `json:"title"`           // 标题（选填）
-	CurUserId       string   `json:"curUserId"`       // 用户id（必填）
-	IncludeNodeKeys []string `json:"includeNodeKeys"` // 包含哪些节点,为空则包含所有节点（选填）
-	ExcludeNodeKeys []string `json:"excludeNodeKeys"` // 排除哪些节点,为空则不排除任何节点（选填）
+	CurPage          int      `json:"curPage"`          // 当前页码（必填）
+	PageSize         int      `json:"pageSize"`         // 每页记录数（必填）
+	ProcessCategorys []string `json:"processCategorys"` // 流程分类（选填）
+	ProcessKeys      []string `json:"processKeys"`      // 流程类型（选填）
+	Title            string   `json:"title"`            // 标题（选填）
+	CurUserId        string   `json:"curUserId"`        // 用户id（必填）
+	IncludeNodeKeys  []string `json:"includeNodeKeys"`  // 包含哪些节点,为空则包含所有节点（选填）
+	ExcludeNodeKeys  []string `json:"excludeNodeKeys"`  // 排除哪些节点,为空则不排除任何节点（选填）
 }
 
 type InstanceCcQuery struct {
-	CurPage         int    `json:"curPage"`         // 当前页码（必填）
-	PageSize        int    `json:"pageSize"`        // 每页记录数（必填）
-	ProcessCategory string `json:"processCategory"` // 流程分类（选填）
-	ProcessKey      string `json:"processKey"`      // 流程类型（选填）
-	Title           string `json:"title"`           // 标题（选填）
-	CurUserId       string `json:"curUserId"`       // 用户id（必填）
+	CurPage          int      `json:"curPage"`          // 当前页码（必填）
+	PageSize         int      `json:"pageSize"`         // 每页记录数（必填）
+	ProcessCategorys []string `json:"processCategorys"` // 流程分类（选填）
+	ProcessKeys      []string `json:"processKeys"`      // 流程类型（选填）
+	Title            string   `json:"title"`            // 标题（选填）
+	CurUserId        string   `json:"curUserId"`        // 用户id（必填）
 }
 
 /*-------------------------------------------------------------------------------------------------------*/
