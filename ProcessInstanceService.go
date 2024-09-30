@@ -606,7 +606,6 @@ func (p ProcessInstanceServiceImpl) AddFields(instanceId, userId string, fields 
 type StartRequest struct {
 	StartUserId      string         `json:"startUserId"`      // 发起人Id（必填）
 	ProcessKey       string         `json:"processKey"`       // 流程标识（必填）
-	AutoSubmit       bool           `json:"autoSubmit"`       // 是否自动第一个发起节点（必填）
 	BusinessId       string         `json:"businessId"`       // 业务Id（必填）
 	BusinessTitle    string         `json:"businessTitle"`    // 业务标题（必填）
 	Fields           []Field        `json:"fields"`           // 列表字段（选填）
