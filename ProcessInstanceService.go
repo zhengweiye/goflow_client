@@ -732,13 +732,12 @@ type DoingTask struct {
 }
 
 type DoneTask struct {
-	TaskId       string          `json:"taskId"`
-	NodeId       string          `json:"nodeId"`
-	NodeName     string          `json:"nodeName"`
-	State        string          `json:"state"`
-	HandleResult string          `json:"handleResult"`
-	EndTime      string          `json:"endTime"`
-	Actors       []DoneTaskActor `json:"actors"`
+	TaskId   string          `json:"taskId"`
+	NodeId   string          `json:"nodeId"`
+	NodeName string          `json:"nodeName"`
+	State    State           `json:"state"`
+	EndTime  string          `json:"endTime"`
+	Actors   []DoneTaskActor `json:"actors"`
 }
 
 type DoneTaskActor struct {
