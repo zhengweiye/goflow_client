@@ -59,6 +59,7 @@ type ProcessInstanceService interface {
 	 * 获取实例详情
 	 */
 	GetDetail(instanceId string) (instanceDetail InstanceDetail, err error)
+	GetDetailBatch(instanceIds []string) (instanceDetails []InstanceDetail, err error)
 
 	/**
 	 * 获取实例流水
@@ -321,6 +322,22 @@ func (p ProcessInstanceServiceImpl) GetDetail(instanceId string) (instanceDetail
 		return
 	}
 	instanceDetail = result.Data
+	return
+}
+
+func (p ProcessInstanceServiceImpl) GetDetailBatch(instanceIds []string) (instanceDetails []InstanceDetail, err error) {
+	param := map[string]any{
+		"instanceIds": instanceIds,
+	}
+	result, err := httpPost[[]InstanceDetail](p.client, "client/instance/getInstances", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+		return
+	}
+	instanceDetails = result.Data
 	return
 }
 
