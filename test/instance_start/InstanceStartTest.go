@@ -7,25 +7,22 @@ import (
 
 func main() {
 	client := goflow_client.Create(goflow_client.Option{
-		//Host:      "http://127.0.0.1:8888",
-		Host:      "https://zhifa.cftzqinzhou.com",
+		Host:      "http://127.0.0.1:8888",
 		AppId:     "enforce",
 		AppSecret: "enforce",
-		Env:       "test",
+		Env:       "prod",
 	})
+	userId := "16"
 	instanceResult, err := client.GetProcessInstanceService().Start(goflow_client.StartRequest{
-		StartUserId:   "16",
-		ProcessKey:    "leave",
-		AutoSubmit:    true,
+		StartUserId:   userId,
+		ProcessKey:    "score_explain",
 		BusinessId:    "1",
-		BusinessTitle: "请假",
-		Fields: []goflow_client.Field{
-			{Key: "days", Name: "请假天数", Value: "1天", SortNum: 1},
-			{Key: "reason", Name: "请假理由", Value: "家里有事", SortNum: 2},
-		},
+		BusinessTitle: "积分申述申请",
+		NextUserIds:   []string{"10", "100"},
 	})
 	fmt.Println("异常：", err)
 	fmt.Printf("结果：%+v\n", instanceResult)
+	client.GetProcessInstanceService().TxCommit(instanceResult.Id, userId)
 }
 
 func main2() {

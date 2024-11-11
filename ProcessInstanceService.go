@@ -92,12 +92,14 @@ type ProcessInstanceService interface {
 	 * 待我审批
 	 */
 	GetTodoList(query InstanceTodoQuery) (totalElements, totalPage int64, list []InstanceDealList, err error)
+	GetTodoIds(query InstanceTodoQuery) (ids []string, err error)
 	GetTodoCount(query InstanceTodoQuery) (count int, err error)
 
 	/**
 	 * 我已审批
 	 */
 	GetDoneList(query InstanceDoneQuery) (totalElements, totalPage int64, list []InstanceDealList, err error)
+	GetDoneIds(query InstanceTodoQuery) (ids []string, err error)
 	GetDoneCount(query InstanceDoneQuery) (count int, err error)
 
 	/**
@@ -479,6 +481,23 @@ func (p ProcessInstanceServiceImpl) GetTodoList(query InstanceTodoQuery) (totalE
 	return
 }
 
+func (p ProcessInstanceServiceImpl) GetTodoIds(query InstanceTodoQuery) (ids []string, err error) {
+	var param map[string]any
+	err = mapstructure.Decode(query, &param)
+	if err != nil {
+		return
+	}
+	result, err := httpPost[[]string](p.client, "client/instance/getTodoIds", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+	}
+	ids = result.Data
+	return
+}
+
 func (p ProcessInstanceServiceImpl) GetTodoCount(query InstanceTodoQuery) (count int, err error) {
 	var param map[string]any
 	err = mapstructure.Decode(query, &param)
@@ -512,6 +531,23 @@ func (p ProcessInstanceServiceImpl) GetDoneList(query InstanceDoneQuery) (totalE
 	totalElements = result.Data.TotalElements
 	totalPage = result.Data.TotalPage
 	list = result.Data.List
+	return
+}
+
+func (p ProcessInstanceServiceImpl) GetDoneIds(query InstanceTodoQuery) (ids []string, err error) {
+	var param map[string]any
+	err = mapstructure.Decode(query, &param)
+	if err != nil {
+		return
+	}
+	result, err := httpPost[[]string](p.client, "client/instance/getDoneIds", param)
+	if err != nil {
+		return
+	}
+	if result.Code != 200 {
+		err = fmt.Errorf(result.Msg)
+	}
+	ids = result.Data
 	return
 }
 

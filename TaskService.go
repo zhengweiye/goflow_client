@@ -466,6 +466,12 @@ type TaskVo struct {
 	HandleResult string     `json:"handleResult"`
 	CreateTime   string     `json:"createTime"`
 	Users        []TaskUser `json:"users"`
+	NextNodes    []TaskNode `json:"nextNodes"`
+}
+
+type TaskNode struct {
+	Key  string `json:"key"`
+	Name string `json:"name"`
 }
 
 type TaskUser struct {
